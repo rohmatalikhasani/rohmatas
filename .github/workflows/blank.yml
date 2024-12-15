@@ -1,0 +1,29 @@
+name: Run Virtual Machine Workflow
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Anda bisa menggunakan ubuntu-latest, windows-latest, atau macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python (misalnya jika Anda ingin menjalankan skrip Python)
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest
+
+      - name: Deploy to VM (optional)
+        run: |
+          # Perintah untuk deployment ke VM atau server lain
+          ssh user@server "bash deploy.sh"
