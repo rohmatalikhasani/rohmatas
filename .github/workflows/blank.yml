@@ -1,29 +1,46 @@
 name: Run Virtual Machine Workflow
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main # Trigger on push to the main branch, adjust as needed
+  pull_request:
+    branches:
+      - main # Trigger on pull request to the main branch, adjust as needed
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Anda bisa menggunakan ubuntu-latest, windows-latest, atau macos-latest
+    runs-on: ubuntu-latest # You can choose ubuntu-latest, windows-latest, or macos-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Python (misalnya jika Anda ingin menjalankan skrip Python)
+      # Step 2: Set up Python environment
+      - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.x'  # You can specify any version here
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
 
-      - name: Run tests
+      # Step 4: Run tests
+      - name: Run tests with pytest
         run: |
-          pytest
+          pytest  # Adjust to your test command, e.g., pytest, unittest, etc.
 
+      # Optional: Step 5: Deploy to VM
       - name: Deploy to VM (optional)
         run: |
-          # Perintah untuk deployment ke VM atau server lain
-          ssh user@server "bash deploy.sh"
+          ssh user@server "bash deploy.sh"  # Customize the VM deploy command
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Store private key securely in GitHub secrets
+
+      # Optional: Step 6: Clean up (if needed)
+      - name: Clean up
+        run: |
+          # Any cleanup commands like stopping services or removing temporary files
