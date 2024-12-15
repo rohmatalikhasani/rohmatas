@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Gunakan versi Ubuntu yang lebih spesifik untuk menghindari perubahan ke ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install pip and pytest (untuk debugging)
+      - name: Install pip and pytest
         run: |
           python -m ensurepip --upgrade
           pip install --upgrade pip
@@ -35,9 +35,13 @@ jobs:
             echo "No requirements.txt found, skipping pip install."
           fi
 
-      - name: Run tests with pytest
+      - name: Check installed packages
         run: |
-          pytest
+          pip list  # To verify if pytest and other dependencies are installed
+
+      - name: Run tests with pytest (verbose)
+        run: |
+          pytest -v  # Run pytest with verbose logging to capture more details
 
       - name: Deploy to VM (optional)
         run: |
