@@ -41,7 +41,7 @@ jobs:
 
       - name: Run tests with pytest (verbose)
         run: |
-          pytest tests -v  # Replace 'tests' with the actual folder or file path
+          pytest path/to/your/tests -v  # Replace with the actual path to your tests
 
       - name: Deploy to VM (optional)
         run: |
